@@ -22,26 +22,6 @@ Mengembangkan sebuah landing page dan contact page dengan:
 ---
 
 ## 📁 Struktur Proyek
-
-├── src
-│   ├── components
-│   │   ├── AboutSection.jsx
-│   │   ├── FloatingMenu.jsx
-│   │   ├── HandHover.jsx
-│   │   └── HeroSection.jsx
-│   ├── styles
-│   │   └── main.css
-│   ├── App.jsx
-│   └── index.jsx
-│
-├── public
-│   └── assets
-│       └── images
-│           └── hero.jpg
-│
-├── README.md
-└── package.json
-### Penjelasan Struktur Folder:
 - src : Direktori utama untuk kode sumber aplikasi.
   
   - components : Menyimpan komponen React yang digunakan dalam aplikasi, seperti AboutSection , FloatingMenu , HandHover , dan HeroSection .
