@@ -1,27 +1,25 @@
 import React from 'react';
 import { useState, useRef, useEffect } from 'react';
+import { usePokemonContext } from '../context/PokemonContext';
 
-// Add itemsPerPage and handleItemsPerPageChange to the props
 function Header({ 
   sortBy, 
   handleSort, 
-  searchTerm, 
-  handleSearchChange, 
-  setSearchTerm, 
   handleLogoClick,
   viewMode,
   toggleViewMode,
   itemsPerPage,
   handleItemsPerPageChange
 }) {
-  // Move hooks inside the component
+  // Use context instead of props for search
+  const { searchTerm, setSearchTerm, typeFilter, setTypeFilter } = usePokemonContext();
+  
   const [isSearchActive, setIsSearchActive] = useState(false);
   const searchInputRef = useRef(null);
 
   // Toggle search function
   const toggleSearch = () => {
     setIsSearchActive(!isSearchActive);
-    // Focus the input when search becomes active
     if (!isSearchActive) {
       setTimeout(() => {
         if (searchInputRef.current) {
@@ -37,6 +35,11 @@ function Header({
     if (window.innerWidth <= 768) {
       setIsSearchActive(false);
     }
+  };
+
+  // Handle search change
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
   };
 
   // Handle click outside to close search on mobile
@@ -101,6 +104,34 @@ function Header({
         
         <div className="header-controls">
           <div className="sort-container">
+            {/* Type filter dropdown */}
+            <select 
+              className="sort-select-types" 
+              value={typeFilter} 
+              onChange={(e) => setTypeFilter(e.target.value)}
+              style={{ marginRight: '10px' }}
+            >
+              <option value="all">All Types</option>
+              <option value="normal">Normal</option>
+              <option value="fire">Fire</option>
+              <option value="water">Water</option>
+              <option value="grass">Grass</option>
+              <option value="electric">Electric</option>
+              <option value="ice">Ice</option>
+              <option value="fighting">Fighting</option>
+              <option value="poison">Poison</option>
+              <option value="ground">Ground</option>
+              <option value="flying">Flying</option>
+              <option value="psychic">Psychic</option>
+              <option value="bug">Bug</option>
+              <option value="rock">Rock</option>
+              <option value="ghost">Ghost</option>
+              <option value="dragon">Dragon</option>
+              <option value="dark">Dark</option>
+              <option value="steel">Steel</option>
+              <option value="fairy">Fairy</option>
+            </select>
+            
             <select 
               className="sort-select" 
               value={sortBy} 

@@ -2,19 +2,21 @@ import { useState, useEffect } from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import PokemonDetail from './components/PokemonDetail'
 import Header from './components/Header'
+import { usePokemonContext } from './context/PokemonContext'
 import './App.css'
 
 
 function PokemonList() {
   const navigate = useNavigate();
+  const { searchTerm, setSearchTerm, filterPokemon } = usePokemonContext();
   
   const [pokemon, setPokemon] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
   const [sortBy, setSortBy] = useState(() => {
-  const savedSortBy = localStorage.getItem('pokemonSortBy');
-  return savedSortBy || '';
+    const savedSortBy = localStorage.getItem('pokemonSortBy');
+    return savedSortBy || '';
   });
   
   const [currentPage, setCurrentPage] = useState(() => {
@@ -299,10 +301,11 @@ function PokemonList() {
   };
 
   
-  const [searchTerm, setSearchTerm] = useState(() => {
-    const savedSearchTerm = localStorage.getItem('pokemonSearchTerm');
-    return savedSearchTerm || '';
-  });
+  // Hapus deklarasi searchTerm dan setSearchTerm lokal
+  // const [searchTerm, setSearchTerm] = useState(() => {
+  //   const savedSearchTerm = localStorage.getItem('pokemonSearchTerm');
+  //   return savedSearchTerm || '';
+  // });
   
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -313,9 +316,10 @@ function PokemonList() {
     localStorage.setItem('pokemonSortBy', sortBy);
   }, [sortBy]);
 
-  useEffect(() => {
-    localStorage.setItem('pokemonSearchTerm', searchTerm);
-  }, [searchTerm]);
+  // Hapus useEffect untuk searchTerm karena sudah dihandle di context
+  // useEffect(() => {
+  //   localStorage.setItem('pokemonSearchTerm', searchTerm);
+  // }, [searchTerm]);
 
   useEffect(() => {
     localStorage.setItem('pokemonViewMode', viewMode);
@@ -325,9 +329,8 @@ function PokemonList() {
     setViewMode(mode);
   };
 
-  const filteredPokemon = pokemon.filter(poke => 
-    poke.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Gunakan filterPokemon dari context (hanya satu deklarasi)
+  const filteredPokemon = filterPokemon(pokemon);
   
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -352,14 +355,13 @@ function PokemonList() {
     setPokemon(sortedPokemon);
   };
 
+  // Hapus deklarasi duplikat filteredPokemon di sini
+  
   return (
     <div className="App">
       <Header 
         sortBy={sortBy}
         handleSort={handleSort}
-        searchTerm={searchTerm}
-        handleSearchChange={handleSearchChange}
-        setSearchTerm={setSearchTerm}
         handleLogoClick={handleLogoClick}
         viewMode={viewMode}
         toggleViewMode={toggleViewMode}

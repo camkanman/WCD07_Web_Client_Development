@@ -45,6 +45,33 @@ body {
   max-width: 1200px;
 }
 
+/* Tambahkan setelah style sort-select */
+.filter-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  height: 40px;
+  padding: 11px 40px 11px 20px;
+  border-radius: 8px;
+  background-color: #3D4466; 
+  color: #97A0CC;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  line-height: normal;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='none' stroke='%23E0E0E0' stroke-width='2' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+}
+
+.filter-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.4);
+}
+
 /* Logo styles */
 .logo-container {
   display: flex;
@@ -813,6 +840,33 @@ body {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
+/* Common dropdown styles */
+.sort-select-types {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  height: 40px;
+  border-radius: 8px;
+  background-color: #3D4466; 
+  color: #97A0CC;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  padding: 11px 40px 11px 20px;
+  font-size: 1rem;
+  line-height: normal;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='none' stroke='%23E0E0E0' stroke-width='2' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+}
+
+.sort-select-types:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.4);
+}
+
 /* ===== ANIMATIONS ===== */
 @keyframes shake {
   0% { transform: rotate(0) translateX(0); }
@@ -868,6 +922,10 @@ body {
     width: 100%;
     flex-direction: column;
     margin-top: 10px;
+  }
+
+  .sort-select-types {
+    display: none !important;
   }
 
   .sort-container {
