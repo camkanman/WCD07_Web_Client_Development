@@ -1,8 +1,14 @@
-export class NameUtils {
-    constructor(public inputName: string) {}
+type NameUtils = {
+    inputName: string;
+    getInitialNameUppercase: () => string;
+};
 
-    getInitialNameUppercase(): string {
-        const initials = this.inputName.split(" ").map(word => word.charAt(0).toUpperCase()).join("");
-        return initials;
-    }
-}
+export const createNameUtils = (inputName: string): NameUtils => {
+    return {
+        inputName,
+        getInitialNameUppercase: () => {
+            const initials = inputName.split(" ").map(word => word.charAt(0).toUpperCase()).join("");
+            return initials;
+        }
+    };
+};

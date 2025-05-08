@@ -1,15 +1,15 @@
-export class Circle {
-    constructor(public radius: number) {}
+type Circle = {
+    radius: number;
+    findDiameter: () => number;
+    findArea: () => number;
+    findCircumference: () => number;
+};
 
-    findDiameter(): number {
-        return this.radius * 2;
-    }
-
-    findArea(): number {
-        return Math.PI * this.radius ** 2;
-    }
-
-    findCircumference(): number {
-        return 2 * Math.PI * this.radius;
-    }
-}
+export const createCircle = (radius: number): Circle => {
+    return {
+        radius,
+        findDiameter: () => radius * 2,
+        findArea: () => Math.PI * radius ** 2,
+        findCircumference: () => 2 * Math.PI * radius
+    };
+};

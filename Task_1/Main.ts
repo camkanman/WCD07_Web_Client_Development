@@ -1,52 +1,74 @@
-import { DateUtils } from "./dates/Dates";
-import { NameUtils } from "./name/Name";
-import { Circle } from "./circle/circle";
+import { createDateUtils } from "./dates/Dates";
+import { createNameUtils } from "./name/Name";
+import { createCircle } from "./circle/Circle";
 import { Rectangle, findAreaRectangle } from "./rectangle/rectangle";
 import { Triangle, findAnglesOfTriangle } from "./triangle/Triangle";
 
-class MainApp {
-    private circle: Circle;
-    private dateUtils: DateUtils;
-    private nameUtils: NameUtils;
-    // private rectangle: Rectangle;
-    // private triangle: Triangle;
+type MainApp = {
+    circle: ReturnType<typeof createCircle>;
+    dateUtils: ReturnType<typeof createDateUtils>;
+    nameUtils: ReturnType<typeof createNameUtils>;
+    runCircleFunction: () => void;
+    runDateFunction: () => void;
+    runNameFunction: () => void;
+};
 
-    constructor() {
-        // Create an instance with a specific radius.
-        this.circle = new Circle(5);
-        // Create an instance with a specific date1 and date2.
-        this.dateUtils = new DateUtils('2024-03-29', '2024-03-21');
-        this.nameUtils = new NameUtils("john doe");
-    }
+const createMainApp = (): MainApp => {
+    const circle = createCircle(5);
+    const dateUtils = createDateUtils('2024-03-29', '2024-03-21');
+    const nameUtils = createNameUtils("john doe");
 
-    runCircleFunction(): void {
-        const diameter = this.circle.findDiameter();
-        const circumference = this.circle.findCircumference().toFixed(4);
-        const area = Math.floor(this.circle.findArea() * 1000) / 1000;
-        console.log("diameter = " + diameter + ", circumference = " + circumference + ", area = " + area);
-    }
+    return {
+        circle,
+        dateUtils,
+        nameUtils,
+        runCircleFunction: () => {
+            try {
+                const diameter = circle.findDiameter();
+                const circumference = circle.findCircumference().toFixed(4);
+                const area = Math.floor(circle.findArea() * 1000) / 1000;
+                console.log(`Diameter: ${diameter}, Circumference: ${circumference}, Area: ${area}`);
+            } catch (error) {
+                console.error("Error in circle calculations:", error);
+            }
+        },
+        runDateFunction: () => {
+            try {
+                const processDate = dateUtils.getDifferenceBetweenDates();
+                console.log(`Selisih hari: ${processDate}`);
+            } catch (error) {
+                console.error("Error in date calculations:", error);
+            }
+        },
+        runNameFunction: () => {
+            try {
+                const sampleName = nameUtils.getInitialNameUppercase();
+                console.log(`Inisial: ${sampleName}`);
+            } catch (error) {
+                console.error("Error in name processing:", error);
+            }
+        }
+    };
+};
 
-    runDateFunction(): void {
-        const processDate = this.dateUtils.getDifferenceBetweenDates();
-        console.log("Output : " + processDate.toString());
-
-    }
-
-    runNameFunction(): void {
-        const sampleName = this.nameUtils.getInitialNameUppercase();
-        console.log("Output : " + sampleName);
-    }
-
-    
-    
-}
-
-
-const app = new MainApp();
+// Menjalankan aplikasi
+const app = createMainApp();
 app.runCircleFunction();
 app.runDateFunction();
 app.runNameFunction();
-const params: Rectangle = { length: 5, width: 3 };
-console.log("Area: " + findAreaRectangle(params));
-const input: Triangle = { a: 80, b: 65 };
-console.log("Output = " + findAnglesOfTriangle(input));
+
+// Menghitung luas persegi panjang
+const rectangle: Rectangle = { length: 5, width: 3 };
+try {
+    console.log(`Luas persegi panjang: ${findAreaRectangle(rectangle)}`);
+} catch (error) {
+    console.error("Error in rectangle calculation:", error);
+}
+
+// Menghitung sudut segitiga
+const triangle: Triangle = { a: 80, b: 65 };
+try {
+    console.log(`Sudut ketiga segitiga: ${findAnglesOfTriangle(triangle)}`);
+} catch (error) {
+    console.error("Error in triangle calculation:", error);
+}
