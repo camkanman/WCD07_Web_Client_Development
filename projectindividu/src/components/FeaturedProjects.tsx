@@ -104,12 +104,14 @@ const FeaturedProjects = () => {
                       <GitHubIcon className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                     </a>
                   )}
-                   {project.viewProjectUrl && (
+                  {/* Uncomment and use this section if you want to add a "View Project" button in the future
+                  {project.viewProjectUrl && (
                     <a href={project.viewProjectUrl} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 text-[#D3E97A] hover:text-white transition-colors">
                       <span className="font-mono text-sm uppercase tracking-wider pb-1 border-b-2 border-current">View Project</span>
                       <ExternalLinkIcon className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                     </a>
                   )}
+                  */}
                 </div>
               </div>
             </div>
