@@ -39,7 +39,7 @@ const Hero = () => {
       <div className="flex-1 relative w-full aspect-square max-w-xl">
         <div className="absolute inset-0 rounded-3xl overflow-hidden shadow-2xl">
           <Image
-            src="https://cdn.prod.website-files.com/5e51c674258ffe10d286d30a/5e535a2b8e24938384074dac_peep-73.svg"
+            src="/man-with-blazer.svg"
             alt="Profile"
             fill
             className="object-cover"
