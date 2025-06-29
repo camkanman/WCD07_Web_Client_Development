@@ -1,120 +1,68 @@
+"use client";
+
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-scroll';
-import { FaBars, FaTimes } from 'react-icons/fa';
 
 const Navbar = () => {
-  const [nav, setNav] = useState(false);
-  const [shadow, setShadow] = useState(false);
-  const [activeLink, setActiveLink] = useState('home');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const links = [
-    { id: 1, link: 'home', text: 'Beranda' },
-    { id: 2, link: 'about', text: 'Tentang Saya' },
-    { id: 3, link: 'projects', text: 'Proyek' },
-    { id: 4, link: 'skills', text: 'Keahlian' },
-    { id: 5, link: 'contact', text: 'Kontak' },
-  ];
-
+  // Mengunci scroll body saat menu mobile terbuka
   useEffect(() => {
-    const handleShadow = () => {
-      if (window.scrollY >= 10) {
-        setShadow(true);
-      } else {
-        setShadow(false);
-      }
-    };
-
-    const handleScroll = () => {
-      const sections = document.querySelectorAll('div[id]');
-      const scrollPosition = window.scrollY + 100;
-
-      sections.forEach((section) => {
-        const sectionId = section.getAttribute('id');
-        const sectionTop = (section as HTMLElement).offsetTop;
-        const sectionHeight = (section as HTMLElement).offsetHeight;
-
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-          setActiveLink(sectionId || 'home');
-        }
-      });
-    };
-
-    window.addEventListener('scroll', handleShadow);
-    window.addEventListener('scroll', handleScroll);
-    
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    // Cleanup function
     return () => {
-      window.removeEventListener('scroll', handleShadow);
-      window.removeEventListener('scroll', handleScroll);
+      document.body.style.overflow = 'auto';
     };
-  }, []);
+  }, [isMenuOpen]);
 
-  const handleClick = () => setNav(!nav);
+  // Fungsi untuk menutup menu saat link diklik
+  const handleLinkClick = () => {
+    setIsMenuOpen(false);
+  };
 
   return (
-    <div
-      className={`fixed top-0 left-0 right-0 h-16 z-50 transition-all duration-300 ${shadow ? 'bg-primary/95 backdrop-blur-md shadow-lg shadow-black/10' : 'bg-transparent'}`}
-    >
-      <div className="w-full max-w-[85%] mx-auto px-4 flex justify-between items-center h-full">
-        <div className="flex items-center">
-          <h1 className="text-xl font-bold text-text-primary">Portfolio</h1>
-        </div>
-
-        {/* Desktop Menu */}
-        <ul className="hidden md:flex items-center space-x-3 lg:space-x-5">
-          {links.map(({ id, link, text }) => (
-            <li key={id} className="relative group">
-              <Link 
-                to={link} 
-                smooth 
-                duration={500}
-                spy={true}
-                activeClass="active"
-                className={`py-2 px-1 text-sm font-medium cursor-pointer transition-all duration-300 ${activeLink === link ? 'text-text-primary' : 'text-text-secondary hover:text-text-primary'}`}
-              >
-                {text}
-              </Link>
-              <div className={`absolute bottom-0 left-0 w-full h-0.5 bg-accent transform transition-all duration-300 ${activeLink === link ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-75'}`}></div>
-            </li>
-          ))}
-        </ul>
-
-        {/* Mobile Menu Icon */}
-        <div onClick={handleClick} className="md:hidden z-10 cursor-pointer p-2 rounded-full hover:bg-secondary/50 transition-all duration-300">
-          {nav ? <FaTimes size={24} /> : <FaBars size={24} />}
-        </div>
-
-        {/* Mobile Menu */}
-        <div
-          className={`${nav ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} 
-          fixed inset-0 bg-black/60 backdrop-blur-sm md:hidden transition-opacity duration-300 ease-in-out z-40`}
-          onClick={handleClick}
-        ></div>
-        <div
-          className={`${nav ? 'translate-x-0' : 'translate-x-full'} 
-          fixed top-0 right-0 w-3/4 h-screen bg-primary shadow-xl flex flex-col justify-center 
-          transition-transform duration-300 ease-in-out md:hidden z-50 p-8`}
-        >
-          <div className="absolute top-6 right-6">
-            <FaTimes size={24} onClick={handleClick} className="cursor-pointer hover:text-accent transition-colors" />
+    <>
+      <nav className="fixed w-full bg-black/90 backdrop-blur-md z-50">
+        <div className="max-w-7xl mx-auto px-4 md:px-0 py-4 flex justify-between items-center">
+          <Link href="/" className="text-2xl font-[Bebas_Neue] tracking-wider hover:text-gray-300 transition-colors">
+            HUSNU MULYADI
+          </Link>
+          
+          {/* Menu Desktop */}
+          <div className="hidden md:flex gap-8 items-center">
+            <Link href="/work" className="font-medium hover:text-gray-300 transition-colors">Work</Link>
+            <Link href="/about" className="font-medium hover:text-gray-300 transition-colors">About</Link>
+            <Link href="/contact" className="font-medium hover:text-gray-300 transition-colors">Contact</Link>
           </div>
-          <ul className="flex flex-col space-y-8 items-center">
-            {links.map(({ id, link, text }) => (
-              <li key={id} className="w-full text-center">
-                <Link
-                  onClick={handleClick}
-                  to={link}
-                  smooth
-                  duration={500}
-                  className={`block py-2 text-xl font-medium transition-all duration-300 ${activeLink === link ? 'text-text-primary' : 'text-text-secondary hover:text-text-primary'}`}
-                >
-                  {text}
-                </Link>
-              </li>
-            ))}
-          </ul>
+
+          {/* Tombol Hamburger Menu (Versi 2 Garis) */}
+          <button
+            className="md:hidden z-50 relative w-8 h-8"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span className={`block w-6 h-0.5 bg-white rounded-full absolute left-1/2 top-1/2 -translate-x-1/2 transition-all duration-300 ease-in-out ${isMenuOpen ? 'rotate-45' : '-translate-y-1'}`}></span>
+            <span className={`block w-6 h-0.5 bg-white rounded-full absolute left-1/2 top-1/2 -translate-x-1/2 transition-all duration-300 ease-in-out ${isMenuOpen ? '-rotate-45' : 'translate-y-1'}`}></span>
+          </button>
+        </div>
+      </nav>
+
+      {/* Panel Menu Mobile (Slide-in) */}
+      <div
+        className={`md:hidden fixed top-0 right-0 w-full max-w-xs h-full bg-neutral-950/90 backdrop-blur-lg shadow-2xl transition-transform duration-300 ease-in-out z-40 ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+      >
+        <div className="flex flex-col items-center justify-center h-full gap-10">
+          <Link href="/" className="text-3xl font-[Bebas_Neue] tracking-wide text-white hover:text-gray-300" onClick={handleLinkClick}>Home</Link>
+          <Link href="/#projects" className="text-3xl font-[Bebas_Neue] tracking-wide text-white hover:text-gray-300" onClick={handleLinkClick}>Work</Link>
+          <Link href="/about" className="text-3xl font-[Bebas_Neue] tracking-wide text-white hover:text-gray-300" onClick={handleLinkClick}>About</Link>
+          <Link href="/#contact" className="text-3xl font-[Bebas_Neue] tracking-wide text-white hover:text-gray-300" onClick={handleLinkClick}>Contact</Link>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
