@@ -2,7 +2,6 @@
 'use client'
 
 import Image from 'next/image'
-import Link from 'next/link'
 
 // Definisikan tipe untuk properti ikon agar bisa digunakan kembali
 type IconProps = React.SVGProps<SVGSVGElement>;
@@ -53,7 +52,7 @@ const FeaturedProjects = () => {
         </p>
 
         <div className="mt-20 space-y-28">
-          {projects.map((project, index) => (
+          {projects.map((project) => (
             <div key={project.title} className="flex flex-col md:flex-row items-center gap-12">
               {/* Sisi Gambar */}
               <div className="w-full md:w-1/2 flex justify-center">
