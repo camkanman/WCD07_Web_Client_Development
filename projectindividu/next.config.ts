@@ -12,11 +12,20 @@ const nextConfig: NextConfig = {
   
   // Atur image domains jika menggunakan gambar eksternal
   images: {
-    domains: ['vercel.com', 'localhost'], // Tambahkan domain gambar yang digunakan
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'vercel.com',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
+    ],
   },
   
   // Aktifkan trailingSlash untuk kompatibilitas yang lebih baik
-  trailingSlash: true,
+  // trailingSlash: true,
 };
 
 export default nextConfig;
