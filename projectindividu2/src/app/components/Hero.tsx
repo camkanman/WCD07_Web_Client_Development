@@ -1,11 +1,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import ContactButton from './ContactButton';
+import WelcomeMessage from './WelcomeMessage';
 
 const Hero = () => {
   return (
     <section className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 px-4 sm:px-6 lg:px-8 md:pb-16">
       <div className="flex-1 space-y-10">
+        <WelcomeMessage />
         <div className="space-y-6">
           <h1 className="text-[57px] md:text-[101px] font-[Bebas_Neue] leading-[90%] tracking-normal">
             HI, I AM<br />

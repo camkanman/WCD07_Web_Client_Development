@@ -34,9 +34,9 @@ const Navbar = () => {
           
           {/* Menu Desktop */}
           <div className="hidden md:flex gap-8 items-center">
-            <Link href="/work" className="font-medium hover:text-gray-300 transition-colors">Work</Link>
+            <Link href="/#projects" className="font-medium hover:text-gray-300 transition-colors">Work</Link>
             <Link href="/about" className="font-medium hover:text-gray-300 transition-colors">About</Link>
-            <Link href="/contact" className="font-medium hover:text-gray-300 transition-colors">Contact</Link>
+            <Link href="/#contact" className="font-medium hover:text-gray-300 transition-colors">Contact</Link>
           </div>
 
           {/* Tombol Hamburger Menu (Versi 2 Garis) */}

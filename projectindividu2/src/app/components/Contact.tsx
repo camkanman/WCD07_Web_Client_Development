@@ -1,5 +1,47 @@
-import React from 'react';
-import SubmitButton from './SubmitButton';
+"use client";
+import React, { useReducer } from 'react';
+
+// 1. Definisikan tipe untuk state dan action (praktik terbaik dengan TypeScript)
+type State = {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  status: 'IDLE' | 'LOADING' | 'SUCCESS' | 'ERROR';
+  error: string | null;
+};
+
+type Action = 
+  | { type: 'UPDATE_FIELD'; field: keyof State; value: string }
+  | { type: 'SUBMIT' }
+  | { type: 'SUCCESS' }
+  | { type: 'ERROR'; error: string };
+
+// 2. Definisikan state awal
+const initialState: State = {
+  name: '',
+  email: '',
+  subject: '',
+  message: '',
+  status: 'IDLE',
+  error: null,
+};
+
+// 3. Buat fungsi reducer
+const formReducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case 'UPDATE_FIELD':
+      return { ...state, [action.field]: action.value };
+    case 'SUBMIT':
+      return { ...state, status: 'LOADING', error: null };
+    case 'SUCCESS':
+      return { ...initialState, status: 'SUCCESS' }; // Reset form dan set status sukses
+    case 'ERROR':
+      return { ...state, status: 'ERROR', error: action.error };
+    default:
+      return state;
+  }
+};
 
 const SocialIcon = ({ href, children }: { href: string, children: React.ReactNode }) => (
   <a href={href} target="_blank" rel="noopener noreferrer" className="text-[#D3E97A] hover:text-white transition-colors duration-300">
@@ -8,6 +50,32 @@ const SocialIcon = ({ href, children }: { href: string, children: React.ReactNod
 );
 
 const Contact = () => {
+  const [state, dispatch] = useReducer(formReducer, initialState);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    dispatch({
+      type: 'UPDATE_FIELD',
+      field: e.target.name as keyof State,
+      value: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    dispatch({ type: 'SUBMIT' });
+
+    // Simulasi panggilan API
+    setTimeout(() => {
+      // Ganti ini dengan logika pengiriman form yang sebenarnya
+      if (state.email && state.message) {
+        console.log('Form submitted:', state);
+        dispatch({ type: 'SUCCESS' });
+      } else {
+        dispatch({ type: 'ERROR', error: 'Please fill in all required fields.' });
+      }
+    }, 2000); // Tunda 2 detik untuk simulasi loading
+  };
+
   return (
     <footer id="contact" className="bg-black text-white border-t border-neutral-800 py-20 sm:py-32 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -42,25 +110,32 @@ const Contact = () => {
 
           {/* Kolom Kanan */}
           <div className="flex flex-col">
-            <form action="#" method="POST" className="space-y-6 flex-grow flex flex-col">
+            <form onSubmit={handleSubmit} className="space-y-6 flex-grow flex flex-col">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-2">Name</label>
-                <input type="text" name="name" id="name" placeholder="John Doe" className="mt-1 block w-full bg-[#1a1a1a] border-transparent rounded-md py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-[#D3E97A]"/>
+                <input type="text" name="name" id="name" placeholder="John Doe" value={state.name} onChange={handleInputChange} disabled={state.status === 'LOADING'} className="mt-1 block w-full bg-[#1a1a1a] border-transparent rounded-md py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-[#D3E97A] disabled:opacity-50"/>
               </div>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-2">Email</label>
-                <input type="email" name="email" id="email" className="mt-1 block w-full bg-[#1a1a1a] border-transparent rounded-md py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-[#D3E97A]"/>
+                <input type="email" name="email" id="email" placeholder="you@example.com" value={state.email} onChange={handleInputChange} disabled={state.status === 'LOADING'} className="mt-1 block w-full bg-[#1a1a1a] border-transparent rounded-md py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-[#D3E97A] disabled:opacity-50"/>
               </div>
               <div>
                 <label htmlFor="subject" className="block text-sm font-medium text-gray-400 mb-2">Subject</label>
-                <input type="text" name="subject" id="subject" className="mt-1 block w-full bg-[#1a1a1a] border-transparent rounded-md py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-[#D3E97A]"/>
+                <input type="text" name="subject" id="subject" placeholder="Project Inquiry" value={state.subject} onChange={handleInputChange} disabled={state.status === 'LOADING'} className="mt-1 block w-full bg-[#1a1a1a] border-transparent rounded-md py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-[#D3E97A] disabled:opacity-50"/>
               </div>
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-400 mb-2">Message</label>
-                <textarea name="message" id="message" rows={5} className="mt-1 block w-full bg-[#1a1a1a] border-transparent rounded-md py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-[#D3E97A]"></textarea>
+                <textarea name="message" id="message" rows={5} value={state.message} onChange={handleInputChange} disabled={state.status === 'LOADING'} className="mt-1 block w-full bg-[#1a1a1a] border-transparent rounded-md py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-[#D3E97A] disabled:opacity-50"></textarea>
               </div>
               <div className="mt-auto pt-8 text-left">
-                <SubmitButton />
+                <button type="submit" disabled={state.status === 'LOADING'} className="inline-flex items-center justify-center px-12 py-3 border border-transparent shadow-sm text-base font-bold rounded-full text-black bg-[#D3E97A] hover:bg-[#cde07a] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#D3E97A] focus:ring-offset-black transition-colors disabled:bg-gray-500 disabled:cursor-not-allowed">
+                  {state.status === 'LOADING' ? 'Sending...' : 'SUBMIT'}
+                </button>
+              </div>
+              {/* Area untuk menampilkan pesan status */}
+              <div className="mt-4 h-6 text-sm">
+                {state.status === 'SUCCESS' && <p className="text-lime-400">Message sent successfully!</p>}
+                {state.status === 'ERROR' && <p className="text-red-500">{state.error}</p>}
               </div>
             </form>
           </div>

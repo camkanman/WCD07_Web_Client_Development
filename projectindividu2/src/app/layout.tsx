@@ -18,8 +18,35 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Husnu Mulyadi - Software Developer",
-  description: "Software developer passionate about creating accessible, efficient, and user-friendly applications.",
+  metadataBase: new URL('https://your-domain.com'), 
+  title: {
+    default: 'Husnu Mulyadi - Software Developer',
+    template: '%s | Husnu Mulyadi',
+  },
+  description: "Passionate software developer creating accessible, efficient, and user-friendly web applications. Explore my projects and skills.",
+  keywords: ['Husnu Mulyadi', 'Software Developer', 'Front-end Developer', 'React', 'Next.js', 'Portfolio'],
+  openGraph: {
+    title: 'Husnu Mulyadi - Software Developer',
+    description: 'Explore the portfolio of Husnu Mulyadi, a passionate software developer.',
+    url: 'https://your-domain.com',
+    siteName: 'Husnu Mulyadi Portfolio',
+    images: [
+      {
+        url: '/og-image.png', 
+        width: 1200,
+        height: 630,
+        alt: 'Husnu Mulyadi Portfolio',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Husnu Mulyadi - Software Developer',
+    description: 'Explore the portfolio of Husnu Mulyadi, a passionate software developer.',
+    images: ['/twitter-image.png'], 
+  },
 };
 
 const bebasNeue = Bebas_Neue({

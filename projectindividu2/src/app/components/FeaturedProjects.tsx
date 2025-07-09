@@ -2,6 +2,7 @@
 'use client'
 
 import Image from 'next/image'
+import { useState, useMemo } from 'react';
 
 // Definisikan tipe untuk properti ikon agar bisa digunakan kembali
 type IconProps = React.SVGProps<SVGSVGElement>;
@@ -43,79 +44,109 @@ const projects = [
 ];
 
 const FeaturedProjects = () => {
-  return (
-    <section id="projects" className="bg-black text-white border-t border-neutral-800 pt-20 pb-0 sm:py-30 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-[43px] md:text-[76px] font-[Bebas_Neue] leading-none tracking-normal">FEATURED PROJECTS</h2>
-        <p className="mt-4 text-gray-400 max-w-2xl">
-        Here are some selected projects that highlight my skills and passion in software development.
-        </p>
+  const [searchTerm, setSearchTerm] = useState('');
 
-        <div className="mt-20 space-y-28">
-          {projects.map((project) => (
-            <div key={project.title} className="flex flex-col md:flex-row items-center gap-12">
-              {/* Sisi Gambar */}
-              <div className="w-full md:w-1/2 flex justify-center">
-                <div className="w-[343px] h-[343px] md:w-[600px] md:h-[600px] bg-[#1a1a1a] rounded-lg relative flex items-center justify-center transition-all duration-[250ms] ease-in-out hover:-translate-y-4 hover:shadow-2xl hover:shadow-lime-300/10 hover:bg-[#333333]">
-                  {/* Tag diposisikan absolut */}
-                  <span className="absolute top-4 left-4 md:top-6 md:left-6 bg-black text-gray-300 text-sm font-mono px-3 py-1 rounded-md z-10">{project.tag}</span>
+  const filteredProjects = useMemo(() => {
+    if (!searchTerm) {
+      return projects; // Jika tidak ada input, tampilkan semua proyek
+    }
+    return projects.filter(project =>
+      project.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm]); // Kalkulasi ulang hanya jika searchTerm berubah
+
+  return (
+    <section id="projects" className="bg-black text-white border-t border-neutral-800 pt-20 pb-28 sm:py-30 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between md:items-end mb-16">
+          <div>
+            <h2 className="text-[43px] md:text-[76px] font-[Bebas_Neue] leading-none tracking-normal">FEATURED PROJECTS</h2>
+            <p className="mt-4 text-gray-400 max-w-2xl">
+            Here are some selected projects that highlight my skills and passion in software development.
+            </p>
+          </div>
+
+          {/* Search Bar */}
+          <div className="mt-8 md:mt-6">
+            <input
+              type="text"
+              placeholder="Search projects by title..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full max-w-md px-4 py-3 bg-[#1a1a1a] border border-neutral-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D3E97A]/50 transition-all"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-28">
+          {filteredProjects.length > 0 ? (
+            filteredProjects.map((project) => (
+              <div key={project.title} className="flex flex-col md:flex-row items-center gap-12 animate-fade-in">
+                {/* Sisi Gambar */}
+                <div className="w-full md:w-1/2 flex justify-center">
+                  <div className="w-[343px] h-[343px] md:w-[600px] md:h-[600px] bg-[#1a1a1a] rounded-lg relative flex items-center justify-center transition-all duration-[250ms] ease-in-out hover:-translate-y-4 hover:shadow-2xl hover:shadow-lime-300/10 hover:bg-[#333333]">
+                    {/* Tag diposisikan absolut */}
+                    <span className="absolute top-4 left-4 md:top-6 md:left-6 bg-black text-gray-300 text-sm font-mono px-3 py-1 rounded-md z-10">{project.tag}</span>
+                    
+                    {/* Kontainer Gambar */}
+                    <div className="relative w-full max-w-[280px] md:max-w-[488px] aspect-[488/347]">
+                      <Image
+                          src={project.imageUrl}
+                          alt={project.title}
+                          fill
+                          className="object-cover rounded-md"
+                          sizes="(max-width: 768px) 100vw, 488px"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Sisi Teks */}
+                <div className="w-full md:w-1/2">
+                  <h3 className="text-3xl lg:text-4xl font-sans text-white leading-tight">{project.title}</h3>
+                  <p className="mt-4 text-gray-400 leading-relaxed">{project.description}</p>
                   
-                  {/* Kontainer Gambar */}
-                  <div className="relative w-full max-w-[280px] md:max-w-[488px] aspect-[488/347]">
-                    <Image
-                        src={project.imageUrl}
-                        alt={project.title}
-                        fill
-                        className="object-cover rounded-md"
-                        sizes="(max-width: 768px) 100vw, 488px"
-                    />
+                  <div className="mt-8 pt-6">
+                    <h4 className="font-semibold text-gray-300 tracking-widest text-sm uppercase">Project Info</h4>
+                    <div className="mt-3 border-t border-neutral-700"></div>
+                    <dl className="mt-4 space-y-3">
+                      {Object.entries(project.info).map(([key, value]) => (
+                        <div key={key} className="flex justify-between border-b border-neutral-800 pb-3 text-sm">
+                          <dt className="text-gray-400 font-sans">{key}</dt>
+                          <dd className="text-white font-sans">{value}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </div>
+
+                  <div className="mt-8 flex items-center gap-8">
+                    {project.liveDemoUrl && (
+                      <a href={project.liveDemoUrl} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 text-[#D3E97A] hover:text-white transition-colors">
+                        <span className="font-mono text-sm uppercase tracking-wider pb-1 border-b-2 border-current">Live Demo</span>
+                        <ExternalLinkIcon className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                      </a>
+                    )}
+                    {project.githubUrl && (
+                      <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 text-[#D3E97A] hover:text-white transition-colors">
+                        <span className="font-mono text-sm uppercase tracking-wider pb-1 border-b-2 border-current">See on Github</span>
+                        <GitHubIcon className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                      </a>
+                    )}
+                    {/* Uncomment and use this section if you want to add a "View Project" button in the future
+                    {project.viewProjectUrl && (
+                      <a href={project.viewProjectUrl} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 text-[#D3E97A] hover:text-white transition-colors">
+                        <span className="font-mono text-sm uppercase tracking-wider pb-1 border-b-2 border-current">View Project</span>
+                        <ExternalLinkIcon className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                      </a>
+                    )}
+                    */}
                   </div>
                 </div>
               </div>
-
-              {/* Sisi Teks */}
-              <div className="w-full md:w-1/2">
-                <h3 className="text-3xl lg:text-4xl font-sans text-white leading-tight">{project.title}</h3>
-                <p className="mt-4 text-gray-400 leading-relaxed">{project.description}</p>
-                
-                <div className="mt-8 pt-6">
-                  <h4 className="font-semibold text-gray-300 tracking-widest text-sm uppercase">Project Info</h4>
-                  <div className="mt-3 border-t border-neutral-700"></div>
-                  <dl className="mt-4 space-y-3">
-                    {Object.entries(project.info).map(([key, value]) => (
-                      <div key={key} className="flex justify-between border-b border-neutral-800 pb-3 text-sm">
-                        <dt className="text-gray-400 font-sans">{key}</dt>
-                        <dd className="text-white font-sans">{value}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                </div>
-
-                <div className="mt-8 flex items-center gap-8">
-                  {project.liveDemoUrl && (
-                    <a href={project.liveDemoUrl} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 text-[#D3E97A] hover:text-white transition-colors">
-                      <span className="font-mono text-sm uppercase tracking-wider pb-1 border-b-2 border-current">Live Demo</span>
-                      <ExternalLinkIcon className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                    </a>
-                  )}
-                  {project.githubUrl && (
-                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 text-[#D3E97A] hover:text-white transition-colors">
-                      <span className="font-mono text-sm uppercase tracking-wider pb-1 border-b-2 border-current">See on Github</span>
-                      <GitHubIcon className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                    </a>
-                  )}
-                  {/* Uncomment and use this section if you want to add a "View Project" button in the future
-                  {project.viewProjectUrl && (
-                    <a href={project.viewProjectUrl} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 text-[#D3E97A] hover:text-white transition-colors">
-                      <span className="font-mono text-sm uppercase tracking-wider pb-1 border-b-2 border-current">View Project</span>
-                      <ExternalLinkIcon className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                    </a>
-                  )}
-                  */}
-                </div>
-              </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p className="text-center text-gray-400 text-lg">No projects found matching your search.</p>
+          )}
         </div>
       </div>
     </section>
