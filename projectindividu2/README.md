@@ -1,6 +1,9 @@
 
 # Husnu Mulyadi - Personal Portfolio Website
 
+---
+
+![Project Screenshot](./public/screenshot.png)
 <div align="center">
   
 [![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
@@ -10,11 +13,11 @@
 
 </div>
 
----
+<center>
 
-### [View Live Demo](https://your-live-demo-url.com) <!-- Ganti dengan URL demo langsung Anda -->
+### [View Live Demo](https://wcd-07-personal-website.vercel.app) 
 
-![Project Screenshot](./public/screenshot.png) <!-- Ganti dengan path screenshot Anda -->
+</center>
 
 ## 📖 About The Project
 
@@ -180,13 +183,13 @@ npm run test:watch
 ## ✒️ Author
 
 - **Husnu Mulyadi**
-- **NIM**: 23523118
-- **Kelas**: WCD-07
+- **NIM**: 24120300013
+- **Kelas**: WCD07
 
 Terhubung dengan saya:
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/your-linkedin-profile/) <!-- Ganti dengan URL profil LinkedIn Anda -->
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/your-username) <!-- Ganti dengan URL profil GitHub Anda -->
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/husnu-mulyadi/) 
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/camkanman) 
 
 ---
 
